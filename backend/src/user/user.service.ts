@@ -14,6 +14,7 @@ import { RegisterUserDto } from './dto/register-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { UpdateProfileDto } from './dto/update-profile.dto';
 @Injectable()
 export class UserService {
   constructor(
@@ -73,12 +74,65 @@ export class UserService {
 
   async getProfile(userId: string): Promise<User | null> {
     try {
-      return await this.userModel.findById(userId).select(['-password','-__v']).exec();
+      return await this.userModel
+        .findById(userId)
+        .select(['-password', '-__v'])
+        .exec();
     } catch (error) {
       throw new HttpException(
         'Error fetching user',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
+    }
+  }
+
+  async getUsersProfile(userId: string) {
+    try {
+      return await this.userModel
+        .findById(userId)
+        .select(['-password', '-__v'])
+        .exec();
+    } catch (error) {
+      throw new HttpException(
+        'Error fetching user',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  async updateProfile(userId: string, updateProfileDto: UpdateProfileDto) {
+    const user = await this.userModel
+      .findById(userId)
+      .select('-password -following -followers');
+
+    if (!user) {
+      throw new NotFoundException('User not Found!');
+    }
+    if (user) {
+      user.name = updateProfileDto?.name || user.name;
+      user.gender = updateProfileDto?.gender || user.gender;
+      user.address = updateProfileDto?.address || user.address;
+      user.dob = updateProfileDto?.dob || user.dob;
+      user.title = updateProfileDto?.title || user?.title;
+      user.about = updateProfileDto?.about || user?.about;
+
+      const updatedUser = await user.save();
+      
+      return {
+        _id: updatedUser._id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        address: updatedUser.address,
+        gender: updatedUser.gender,
+        dob: updatedUser.dob,
+        title: updatedUser.title,
+        about: updatedUser.about,
+        username: updatedUser.username,
+        joined: updatedUser.joined,
+        avatar_url: updatedUser.avatar_url,
+        // followers: updatedUser.followers,
+        // following: updatedUser.following,
+      };
     }
   }
 }
