@@ -15,12 +15,23 @@ import { LoginUserDto } from './dto/login-user.dto';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { UpdateProfileDto } from './dto/update-profile.dto';
+import { UploadApiErrorResponse, UploadApiResponse } from 'cloudinary';
+// import cloudinary from 'src/cloudinary/cloudinary.config';
+import { ConfigService } from '@nestjs/config';
+import { v2 as cloudinary } from 'cloudinary';
 @Injectable()
 export class UserService {
   constructor(
     @InjectModel(User.name) private userModel: Model<User>,
     private jwtService: JwtService,
-  ) {}
+    configService: ConfigService
+  ) {
+    cloudinary.config({
+      cloud_name: configService.get('CLOUDINARY_CLOUD_NAME'),
+      api_key: configService.get('CLOUDINARY_API_KEY'),
+      api_secret: configService.get('CLOUDINARY_API_SECRET'),
+    })
+  }
 
   async registerUser(data: RegisterUserDto): Promise<User> {
     //    find user with the email if exist
@@ -117,7 +128,7 @@ export class UserService {
       user.about = updateProfileDto?.about || user?.about;
 
       const updatedUser = await user.save();
-      
+
       return {
         _id: updatedUser._id,
         name: updatedUser.name,
@@ -134,5 +145,33 @@ export class UserService {
         // following: updatedUser.following,
       };
     }
+  }
+
+  // Upload Avatar
+  async updateAvatar(userId: string, avatarUrl: string): Promise<User> {
+    const user = await this.userModel.findById(userId);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    user.avatar_url = avatarUrl;
+
+    return await user.save();
+  }
+
+  // cloudinary
+  
+  async uploadImage(
+    filePath: string,
+  ): Promise<UploadApiResponse | UploadApiErrorResponse> {
+    return new Promise((resolve, reject) => {
+      cloudinary.uploader.upload(
+        filePath,
+        { folder: 'blog_app_react_node' },
+        (err, res) => {
+          if (err) return reject(err);
+          resolve(res);
+        },
+      );
+    });
   }
 }

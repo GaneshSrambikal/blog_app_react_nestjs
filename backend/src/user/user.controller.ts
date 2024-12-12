@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Get,
@@ -9,7 +10,9 @@ import {
   Post,
   Put,
   Req,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -20,7 +23,10 @@ import { GetUserProfileDto } from './dto/get-users-profile.dto';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 import { GetUser } from 'src/shared/decorators/get-user.decorator';
 import { User } from './user.schema';
-
+import { FileInterceptor } from '@nestjs/platform-express';
+import { multerConfig } from 'src/config/multer-config';
+import * as fs from 'fs';
+import cloudinary from 'src/cloudinary/cloudinary.config';
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
@@ -82,6 +88,84 @@ export class UserController {
       };
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  // upload avatar
+  // @Post('upload-avatar')
+  // @UseGuards(JwtAuthGuard)
+  // @UseInterceptors(FileInterceptor('image', multerConfig))
+  // async uploadAvatar(
+  //   @UploadedFile() file: Express.Multer.File,
+  //   @Req() req: any,
+  // ) {
+  //   console.log(req.user.id);
+  //   if (!file) {
+  //     throw new BadRequestException('No file uploaded.');
+  //   }
+  //   console.log(file.path);
+  //   try {
+  //     const result = await cloudinary.uploader.upload(file.path, {
+  //       folder: 'blog_app_react_node',
+  //       allowed_formats: ['jpg', 'png'],
+  //       transformation: [{ width: 500, height: 500, crop: 'fill' }],
+  //     });
+  //     console.log(result);
+  //     // clean up local file
+  //     fs.unlinkSync(file.path);
+
+  //     // update user record
+  //     const userId = req.user.id;
+  //     const updatedUser = await this.userService.uploadAvatar(
+  //       userId,
+  //       result.secure_url,
+  //     );
+
+  //     return {
+  //       message: 'Avatar uploaded successfully',
+  //       avatarUrl: result.secure_url,
+  //       user: updatedUser,
+  //     };
+  //   } catch (error) {
+  //     throw new BadRequestException('Failed to upload avatar.');
+  //   }
+  // }
+
+  // upload avatar
+  // upload avatar
+  // @Post('upload-avatar')
+  // @UseGuards(JwtAuthGuard)
+  // @UseInterceptors(FileInterceptor('image', multerConfig))
+  @Post('upload-avatar')
+  @UseGuards(JwtAuthGuard)
+  @UseInterceptors(FileInterceptor('image'))
+  async uploadAvatar(
+    @UploadedFile() file: Express.Multer.File,
+    @Req() req: any,
+  ) {
+    if (!file) {
+      throw new BadRequestException('No file uploaded.');
+    }
+
+    try {
+      const result = await this.userService.uploadImage(file.path);
+      // clean the local file at ./upload
+      fs.unlinkSync(file.path);
+
+      // update user avatar
+      let userId = req.user.id;
+      let avatarUrl = result?.secure_url;
+      const updatedUser = await this.userService.updateAvatar(
+        userId,
+        avatarUrl,
+      );
+      return {
+        message: 'Profile avatar updated successfully',
+        user: updatedUser,
+      };
+    } catch (error) {
+      console.error('Error uploading image', error);
+      throw new BadRequestException(error.message);
     }
   }
 }
