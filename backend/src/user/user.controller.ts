@@ -169,4 +169,25 @@ export class UserController {
     }
     return await this.userService.resetPassword(token, password);
   }
+
+  // follow user
+  @Post(':id/follow')
+  @UseGuards(JwtAuthGuard)
+  async followUser(@GetUser() user: User, @Param() params: ValidateUserIdDto) {
+    const { id } = params;
+
+    return await this.userService.followUser(user.id, id);
+  }
+
+  // unfollow User
+  @Post(':id/unfollow')
+  @UseGuards(JwtAuthGuard)
+  async unFollowUser(
+    @GetUser() user: User,
+    @Param() params: ValidateUserIdDto,
+  ) {
+    const { id } = params;
+
+    return await this.userService.unFollowUser(user.id, id);
+  }
 }

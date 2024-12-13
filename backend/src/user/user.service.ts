@@ -264,4 +264,54 @@ export class UserService {
       message: 'Password has been reset successfully.',
     };
   }
+
+  async followUser(currentUserId, followUserId) {
+    const user = await this.userModel.findById(followUserId);
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    if (!user.followers.includes(currentUserId)) {
+      user.followers.push(currentUserId);
+
+      await user.save();
+
+      const currentUser = await this.userModel.findById(currentUserId);
+
+      if (!currentUser.following.includes(followUserId)) {
+        currentUser.following.push(followUserId);
+
+        await currentUser.save();
+      }
+      return { message: `Following user: ${user.id}` };
+    } else {
+      return { message: 'Already following.' };
+    }
+  }
+
+  async unFollowUser(currentUserId, followingUserId) {
+    const user = await this.userModel.findById(followingUserId);
+
+    if (user.followers.includes(currentUserId)) {
+      const followers = user.followers.filter(
+        (follower) => follower.toString() !== currentUserId,
+      );
+      user.followers = followers;
+      await user.save();
+
+      const currentUser = await this.userModel.findById(currentUserId);
+      if (currentUser.following.includes(followingUserId)) {
+        const following = currentUser.following.filter(
+          (following) => following.toString() !== followingUserId,
+        );
+        currentUser.following = following;
+        await currentUser.save();
+      }
+      return {
+        message: `Unfollowed user ${followingUserId}`,
+      };
+    } else {
+      return { message: 'Already unfollowed' };
+    }
+  }
 }
