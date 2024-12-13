@@ -206,4 +206,11 @@ export class UserController {
     const { id } = params;
     return await this.userService.listFollowing(id);
   }
+
+  // update ai credits
+  @Post('update-credits')
+  @UseGuards(JwtAuthGuard)
+  async updateCredits(@GetUser() user: User) {
+    return await this.userService.updateCredits(user.id);
+  }
 }

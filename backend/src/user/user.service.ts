@@ -341,4 +341,19 @@ export class UserService {
 
     return { following: listFollowing };
   }
+
+  // update ai credits for each use
+  async updateCredits(userId: string) {
+    const user = await this.userModel.findById(userId);
+
+    const updatedUser = await this.userModel.findByIdAndUpdate(
+      userId,
+      { totalAiCredit: user.totalAiCredit - 20 },
+      { new: true },
+    );
+    return {
+      message: 'Credit updated successfully',
+      user: updatedUser,
+    };
+  }
 }
