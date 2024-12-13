@@ -91,51 +91,7 @@ export class UserController {
     }
   }
 
-  // upload avatar
-  // @Post('upload-avatar')
-  // @UseGuards(JwtAuthGuard)
-  // @UseInterceptors(FileInterceptor('image', multerConfig))
-  // async uploadAvatar(
-  //   @UploadedFile() file: Express.Multer.File,
-  //   @Req() req: any,
-  // ) {
-  //   console.log(req.user.id);
-  //   if (!file) {
-  //     throw new BadRequestException('No file uploaded.');
-  //   }
-  //   console.log(file.path);
-  //   try {
-  //     const result = await cloudinary.uploader.upload(file.path, {
-  //       folder: 'blog_app_react_node',
-  //       allowed_formats: ['jpg', 'png'],
-  //       transformation: [{ width: 500, height: 500, crop: 'fill' }],
-  //     });
-  //     console.log(result);
-  //     // clean up local file
-  //     fs.unlinkSync(file.path);
-
-  //     // update user record
-  //     const userId = req.user.id;
-  //     const updatedUser = await this.userService.uploadAvatar(
-  //       userId,
-  //       result.secure_url,
-  //     );
-
-  //     return {
-  //       message: 'Avatar uploaded successfully',
-  //       avatarUrl: result.secure_url,
-  //       user: updatedUser,
-  //     };
-  //   } catch (error) {
-  //     throw new BadRequestException('Failed to upload avatar.');
-  //   }
-  // }
-
-  // upload avatar
-  // upload avatar
-  // @Post('upload-avatar')
-  // @UseGuards(JwtAuthGuard)
-  // @UseInterceptors(FileInterceptor('image', multerConfig))
+  //  Upload avatar
   @Post('upload-avatar')
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(FileInterceptor('image'))
@@ -166,6 +122,24 @@ export class UserController {
     } catch (error) {
       console.error('Error uploading image', error);
       throw new BadRequestException(error.message);
+    }
+  }
+
+  // generate avatar
+  @Post('generate-avatar')
+  @UseGuards(JwtAuthGuard)
+  async generateAvatar(@Req() req: any) {
+    try {
+      const user = await this.userService.generateAvatar(req.user.id);
+      if (!user) {
+        throw new BadRequestException('sorry something went wrong.');
+      }
+      return {
+        message: 'File Upload successfully',
+        user,
+      };
+    } catch (error) {
+      throw new Error(error.message);
     }
   }
 }

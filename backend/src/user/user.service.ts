@@ -19,18 +19,19 @@ import { UploadApiErrorResponse, UploadApiResponse } from 'cloudinary';
 // import cloudinary from 'src/cloudinary/cloudinary.config';
 import { ConfigService } from '@nestjs/config';
 import { v2 as cloudinary } from 'cloudinary';
+import { getRandomAvatarbyGender } from 'src/utils/avatar.util';
 @Injectable()
 export class UserService {
   constructor(
     @InjectModel(User.name) private userModel: Model<User>,
     private jwtService: JwtService,
-    configService: ConfigService
+    configService: ConfigService,
   ) {
     cloudinary.config({
       cloud_name: configService.get('CLOUDINARY_CLOUD_NAME'),
       api_key: configService.get('CLOUDINARY_API_KEY'),
       api_secret: configService.get('CLOUDINARY_API_SECRET'),
-    })
+    });
   }
 
   async registerUser(data: RegisterUserDto): Promise<User> {
@@ -159,7 +160,7 @@ export class UserService {
   }
 
   // cloudinary
-  
+
   async uploadImage(
     filePath: string,
   ): Promise<UploadApiResponse | UploadApiErrorResponse> {
@@ -173,5 +174,17 @@ export class UserService {
         },
       );
     });
+  }
+
+  async generateAvatar(userId: string) {
+    const user = await this.userModel
+      .findById(userId)
+      .select('-password')
+      .exec();
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    user.avatar_url = getRandomAvatarbyGender(user.gender);
+    return await user.save();
   }
 }
