@@ -3,6 +3,7 @@ import {
   HttpException,
   HttpStatus,
   Injectable,
+  Logger,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -13,6 +14,7 @@ import { createUserSchema } from 'src/validators/userValidator';
 import { RegisterUserDto } from './dto/register-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
 import * as bcrypt from 'bcrypt';
+import * as crypto from 'crypto';
 import { JwtService } from '@nestjs/jwt';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 import { UploadApiErrorResponse, UploadApiResponse } from 'cloudinary';
@@ -20,8 +22,12 @@ import { UploadApiErrorResponse, UploadApiResponse } from 'cloudinary';
 import { ConfigService } from '@nestjs/config';
 import { v2 as cloudinary } from 'cloudinary';
 import { getRandomAvatarbyGender } from 'src/utils/avatar.util';
+import { Request } from 'express';
+import { sendEmail } from 'src/utils/mailer.util';
 @Injectable()
 export class UserService {
+  private readonly logger = new Logger(UserService.name);
+
   constructor(
     @InjectModel(User.name) private userModel: Model<User>,
     private jwtService: JwtService,
@@ -176,15 +182,61 @@ export class UserService {
     });
   }
 
-  async generateAvatar(userId: string) {
-    const user = await this.userModel
-      .findById(userId)
-      .select('-password')
-      .exec();
+  // Generate Avatar
+  async generateAvatar(userId: string): Promise<User> {
+    const user = await this.userModel.findById(userId);
+
     if (!user) {
       throw new NotFoundException('User not found');
     }
     user.avatar_url = getRandomAvatarbyGender(user.gender);
     return await user.save();
+  }
+
+  // Get users current avatar
+  async getUserCurrentAvatar(userId: string): Promise<Partial<User> | null> {
+    const user = await this.userModel.findById(userId);
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    return { avatar_url: user.avatar_url };
+  }
+
+  // forgot Password
+  async forgotPassword(req: Request, email: string) {
+    const user = await this.userModel.findOne({ email });
+
+    if (!user) {
+      throw new NotFoundException(`User with email: ${email} not found.`);
+    }
+
+    // generate password reset token
+    const resetToken = crypto.randomBytes(20).toString('hex');
+
+    // set token and expiration on user document
+    user.resetPasswordToken = resetToken;
+    user.resetPasswordExpire = Date.now() + 30 * 60 * 1000;
+
+    await user.save();
+
+    // send reset token via email
+    const resetUrl = `${req.protocol}://${req.get(`host`)}/api/users/reset-password/${resetToken}`;
+    const message = `You requested a password reset. Please click the following link to reset your password: ${resetUrl}`;
+
+    // send email
+    await sendEmail({
+      email: user.email,
+      subject: 'Password Reset Request',
+      text: message,
+      html: `<h1>You requested a password reset. Please click the following link to reset your password: <a href=${resetUrl}>reset password</a></h1>`,
+    });
+    
+    return {
+      message: 'Password reset link sent to email',
+      link: resetUrl,
+      resetToken: resetToken,
+    };
   }
 }

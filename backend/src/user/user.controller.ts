@@ -5,6 +5,7 @@ import {
   Get,
   HttpException,
   HttpStatus,
+  Logger,
   NotFoundException,
   Param,
   Post,
@@ -27,8 +28,10 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { multerConfig } from 'src/config/multer-config';
 import * as fs from 'fs';
 import cloudinary from 'src/cloudinary/cloudinary.config';
+import { ValidateUserIdDto } from 'src/shared/dto/validate-user-id.dto';
 @Controller('users')
 export class UserController {
+  private readonly logger = new Logger(UserController.name);
   constructor(private readonly userService: UserService) {}
 
   // Register a User
@@ -129,17 +132,26 @@ export class UserController {
   @Post('generate-avatar')
   @UseGuards(JwtAuthGuard)
   async generateAvatar(@Req() req: any) {
-    try {
-      const user = await this.userService.generateAvatar(req.user.id);
-      if (!user) {
-        throw new BadRequestException('sorry something went wrong.');
-      }
-      return {
-        message: 'File Upload successfully',
-        user,
-      };
-    } catch (error) {
-      throw new Error(error.message);
-    }
+    const user = await this.userService.generateAvatar(req.user.id);
+
+    return {
+      message: 'File Upload successfully',
+      user,
+    };
+  }
+
+  // Get user current avatar url
+  @Get('/user/:id/get-avatar-url')
+  @UseGuards(JwtAuthGuard)
+  async getUserCurrentAvatar(@Param() params: ValidateUserIdDto) {
+    const { id } = params;
+
+    return await this.userService.getUserCurrentAvatar(id);
+  }
+
+  // Forgot Password
+  @Post('forgot-password')
+  async forgotPassword(@Req() req: any, @Body() body: { email: string }) {
+    return await this.userService.forgotPassword(req, body.email);
   }
 }

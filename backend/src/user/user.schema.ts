@@ -62,8 +62,8 @@ export class User extends Document {
   @Prop({ type: String, default: undefined, trim: true })
   resetPasswordToken: string;
 
-  @Prop({ type: Date, default: undefined })
-  resetPasswordExpire: Date;
+  @Prop({ type: Number, default: undefined })
+  resetPasswordExpire: number;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
