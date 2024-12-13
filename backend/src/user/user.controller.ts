@@ -223,4 +223,11 @@ export class UserController {
   ) {
     return await this.userService.updateRewards(user.id, body.rewardType);
   }
+
+  // redeem Credits
+  @Post('redeem-credits')
+  @UseGuards(JwtAuthGuard)
+  async redeemCredits(@GetUser() user: User) {
+    return await this.userService.redeemCredits(user.id);
+  }
 }

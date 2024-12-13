@@ -348,7 +348,7 @@ export class UserService {
 
     const updatedUser = await this.userModel.findByIdAndUpdate(
       userId,
-      { totalAiCredit: user.totalAiCredit - 20 },
+      { totalAiCredit: user.totalAiCredits - 20 },
       { new: true },
     );
     return {
@@ -411,5 +411,32 @@ export class UserService {
       default:
         break;
     }
+  }
+
+  // redeem credits
+  async redeemCredits(userId: string) {
+    const user = await this.userModel.findById(userId);
+
+    let rewards = user?.rewards;
+
+    if (rewards < 100) {
+      throw new BadRequestException('Not enough rewards.');
+    }
+    const updatedUser = await this.userModel.findByIdAndUpdate(
+      userId,
+      {
+        rewards: user.rewards - 100,
+        totalAiCredits: user.totalAiCredits + 100,
+      },
+      { new: true },
+    );
+
+    return {
+      message: 'Reward Redeemed',
+      updatedUser: {
+        rewards: updatedUser.rewards,
+        totalAICredits: updatedUser.totalAiCredits,
+      },
+    };
   }
 }

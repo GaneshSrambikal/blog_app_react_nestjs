@@ -54,7 +54,7 @@ export class User extends Document {
   rewards: number;
 
   @Prop({ type: Number, default: 100 })
-  totalAiCredit: number;
+  totalAiCredits: number;
 
   @Prop({ required: true, type: Boolean, default: false })
   isAdmin: boolean;
