@@ -29,6 +29,7 @@ import { multerConfig } from 'src/config/multer-config';
 import * as fs from 'fs';
 import cloudinary from 'src/cloudinary/cloudinary.config';
 import { ValidateUserIdDto } from 'src/shared/dto/validate-user-id.dto';
+import { PasswordResetDto } from './dto/password-reset.dto';
 @Controller('users')
 export class UserController {
   private readonly logger = new Logger(UserController.name);
@@ -153,5 +154,19 @@ export class UserController {
   @Post('forgot-password')
   async forgotPassword(@Req() req: any, @Body() body: { email: string }) {
     return await this.userService.forgotPassword(req, body.email);
+  }
+
+  // Reset Password
+  @Post('reset-password/:token')
+  async resetPassword(
+    @Param() params: { token: string },
+    @Body() body: PasswordResetDto,
+  ) {
+    const { token } = params;
+    const { password } = body;
+    if (!token) {
+      throw new BadRequestException('Invalid reset link. Please again.');
+    }
+    return await this.userService.resetPassword(token, password);
   }
 }

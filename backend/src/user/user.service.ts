@@ -4,6 +4,7 @@ import {
   HttpStatus,
   Injectable,
   Logger,
+  NotAcceptableException,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -24,6 +25,7 @@ import { v2 as cloudinary } from 'cloudinary';
 import { getRandomAvatarbyGender } from 'src/utils/avatar.util';
 import { Request } from 'express';
 import { sendEmail } from 'src/utils/mailer.util';
+import { PasswordResetDto } from './dto/password-reset.dto';
 @Injectable()
 export class UserService {
   private readonly logger = new Logger(UserService.name);
@@ -232,11 +234,34 @@ export class UserService {
       text: message,
       html: `<h1>You requested a password reset. Please click the following link to reset your password: <a href=${resetUrl}>reset password</a></h1>`,
     });
-    
+
     return {
       message: 'Password reset link sent to email',
       link: resetUrl,
       resetToken: resetToken,
+    };
+  }
+
+  // reset password
+  async resetPassword(token, password) {
+    const user = await this.userModel
+      .findOne({
+        resetPasswordToken: token,
+        resetPasswordExpire: { $gt: Date.now() },
+      })
+      .select('+password');
+
+    if (!user) {
+      throw new NotAcceptableException('reset token expired');
+    }
+
+    user.password = password;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpire = undefined;
+
+    await user.save();
+    return {
+      message: 'Password has been reset successfully.',
     };
   }
 }
