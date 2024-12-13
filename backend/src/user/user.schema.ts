@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import mongoose, { Document } from 'mongoose';
 import * as bcrypt from 'bcrypt';
 @Schema({ timestamps: true })
 export class User extends Document {
@@ -54,7 +54,7 @@ export class User extends Document {
   rewards: number;
 
   @Prop({ type: Number, default: 100 })
-  totalAiCredit: number;
+  totalAiCredits: number;
 
   @Prop({ required: true, type: Boolean, default: false })
   isAdmin: boolean;
@@ -62,8 +62,14 @@ export class User extends Document {
   @Prop({ type: String, default: undefined, trim: true })
   resetPasswordToken: string;
 
-  @Prop({ type: Date, default: undefined })
-  resetPasswordExpire: Date;
+  @Prop({ type: Number, default: undefined })
+  resetPasswordExpire: number;
+
+  @Prop({ type: [{ type: String, ref: 'User' }] })
+  followers?: string[];
+
+  @Prop({ type: [{ type: String, ref: 'User' }] })
+  following?: string[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

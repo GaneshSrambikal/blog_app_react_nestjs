@@ -7,6 +7,7 @@ import { BlogModule } from './blog/blog.module';
 import { DatabaseModule } from './database/database.module';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { MulterModule } from '@nestjs/platform-express';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -17,6 +18,9 @@ import { AuthModule } from './auth/auth.module';
     DatabaseModule,
     UserModule,
     AuthModule,
+    MulterModule.register({
+      dest: './uploads',
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],

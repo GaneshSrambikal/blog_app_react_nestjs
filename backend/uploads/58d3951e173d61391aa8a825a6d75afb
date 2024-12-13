@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pull the String</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f0f0f0;
+      overflow: hidden;
+    }
+
+    .string-container {
+      position: relative;
+      width: 100px;
+      height: 300px;
+    }
+
+    .string {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 5px;
+      height: 100%;
+      background: #000;
+    }
+
+    .handle {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 30px;
+      height: 30px;
+      background: red;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: transform 0.3s ease-out;
+    }
+  </style>
+</head>
+<body>
+  <div class="string-container">
+    <div class="string"></div>
+    <div class="handle"></div>
+  </div>
+
+  <script>
+    const handle = document.querySelector('.handle');
+    const body = document.body;
+
+    const colors = ['#f0f0f0', '#ffcccc', '#ccffcc', '#ccccff', '#ffffcc', '#ffccff'];
+    let currentColorIndex = 0;
+
+    let isDragging = false;
+    let startY;
+
+    handle.addEventListener('mousedown', (event) => {
+      isDragging = true;
+      startY = event.clientY;
+    });
+
+    document.addEventListener('mousemove', (event) => {
+      if (isDragging) {
+        const offsetY = Math.min(event.clientY - startY, 150); // Limit pulling distance
+        handle.style.transform = `translateX(-50%) translateY(${offsetY}px)`;
+      }
+    });
+
+    document.addEventListener('mouseup', () => {
+      if (isDragging) {
+        isDragging = false;
+
+        // Change the background color
+        currentColorIndex = (currentColorIndex + 1) % colors.length;
+        body.style.backgroundColor = colors[currentColorIndex];
+
+        // Animate the bounce-back effect
+        handle.style.transition = 'transform 0.3s ease-out';
+        handle.style.transform = 'translateX(-50%) translateY(-20px)';
+
+        setTimeout(() => {
+          handle.style.transform = 'translateX(-50%) translateY(0)';
+        }, 300);
+      }
+    });
+  </script>
+</body>
+</html>
