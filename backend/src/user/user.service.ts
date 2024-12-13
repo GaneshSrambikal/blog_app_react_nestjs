@@ -314,4 +314,31 @@ export class UserService {
       return { message: 'Already unfollowed' };
     }
   }
+
+  // list followers
+  async listFollowers(userId: string): Promise<Partial<User>> {
+    const user = await this.userModel.findById(userId);
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    const listFollowers = (
+      await user.populate('followers', 'name title avatar_url')
+    ).followers;
+
+    return { followers: listFollowers };
+  }
+  // list following
+  async listFollowing(userId: string): Promise<Partial<User>> {
+    const user = await this.userModel.findById(userId);
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    const listFollowing = (
+      await user.populate('following', 'name title avatar_url')
+    ).following;
+
+    return { following: listFollowing };
+  }
 }

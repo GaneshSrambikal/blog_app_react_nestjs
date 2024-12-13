@@ -190,4 +190,20 @@ export class UserController {
 
     return await this.userService.unFollowUser(user.id, id);
   }
+
+  // list followers
+  @Get(':id/followers')
+  @UseGuards(JwtAuthGuard)
+  async listFollowers(@Param() params: ValidateUserIdDto) {
+    const { id } = params;
+    return await this.userService.listFollowers(id);
+  }
+
+  // list followings
+  @Get(':id/following')
+  @UseGuards(JwtAuthGuard)
+  async listFollowing(@Param() params: ValidateUserIdDto) {
+    const { id } = params;
+    return await this.userService.listFollowing(id);
+  }
 }
