@@ -213,4 +213,14 @@ export class UserController {
   async updateCredits(@GetUser() user: User) {
     return await this.userService.updateCredits(user.id);
   }
+
+  // update Rewards
+  @Post('update-rewards')
+  @UseGuards(JwtAuthGuard)
+  async updateRewards(
+    @GetUser() user: User,
+    @Body() body: { rewardType: string },
+  ) {
+    return await this.userService.updateRewards(user.id, body.rewardType);
+  }
 }

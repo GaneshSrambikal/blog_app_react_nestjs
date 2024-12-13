@@ -356,4 +356,60 @@ export class UserService {
       user: updatedUser,
     };
   }
+
+  // update Rewards
+  async updateRewards(userId: string, rewardType: string) {
+    let updatedUser = {};
+    let typeOfRewards = ['like', 'comment', 'blog'];
+    if (!rewardType) {
+      throw new BadRequestException('Please provide reward type');
+    }
+    const user = await this.userModel.findById(userId);
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    if (!typeOfRewards.includes(rewardType)) {
+      throw new NotAcceptableException(
+        'Please provide a correct reward type. ex. [like | comment | blog]',
+      );
+    }
+
+    switch (rewardType) {
+      case 'blog':
+        updatedUser = await this.userModel.findByIdAndUpdate(
+          userId,
+          { rewards: user.rewards + 10 },
+          { new: true },
+        );
+        return {
+          message: 'Rewards updated successfully',
+          updatedUser,
+        };
+      case 'like':
+        updatedUser = await this.userModel.findByIdAndUpdate(
+          userId,
+          { rewards: user.rewards + 1 },
+          { new: true },
+        );
+        return {
+          message: 'Rewards updated successfully',
+          updatedUser,
+        };
+      case 'comment':
+        updatedUser = await this.userModel.findByIdAndUpdate(
+          userId,
+          { rewards: user.rewards + 5 },
+          { new: true },
+        );
+        return {
+          message: 'Rewards updated successfully',
+          updatedUser,
+        };
+
+      default:
+        break;
+    }
+  }
 }
