@@ -7,6 +7,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UploadedFile,
   UseGuards,
   UseInterceptors,
@@ -125,5 +126,11 @@ export class BlogController {
   @UseGuards(JwtAuthGuard)
   async deleteComment(@Param() param: DeleteCommentDto) {
     return await this.blogService.deleteComment(param.blogId, param.commentId);
+  }
+
+  // Search blogs
+  @Get('/searchblog')
+  async searchBlogs(@Query() query: any) {
+    return await this.blogService.searchBlogs(query);
   }
 }

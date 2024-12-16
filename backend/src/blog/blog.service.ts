@@ -178,6 +178,74 @@ export class BlogService {
     return {
       message: 'Comment deleted successfully.',
     };
-  
+  }
+
+  // search blog by title content
+  async searchBlogs(query) {
+    const searchTerm = query.title || '';
+    const page = parseInt(query.page) || 1;
+    const limit = parseInt(query.limit) || 1;
+    const skip = (page - 1) * limit;
+
+    let queryS = {};
+
+    // sorting
+    const sortBy = query.sortBy || 'createdAt';
+    const order = query.order === 'asc' ? 1 : -1;
+    const sortOrder = { [sortBy]: order };
+    // filtering by author and date range
+    const author = query.author;
+    const startDate = query.startDate;
+    const endDate = query.endDate;
+    // build filter query
+    // let filterQuery = {};
+    let filterQuery = {
+      title: { $regex: searchTerm, $options: 'i' },
+    };
+    // if (author) {
+    //   filterQuery.author = author; // Ensure the author ID is passed correctly as an ObjectId
+    // }
+
+    // date range i.e (2024-05-01 to 2024-05-30)
+    // if (startDate || endDate) {
+    //   filterQuery.createdAt = {};
+    //   if (startDate) {
+    //     filterQuery.createdAt.$gte = new Date(startDate);
+    //   }
+    //   if (endDate) {
+    //     filterQuery.createAt.$lte = new Date(endDate);
+    //   }
+    // }
+
+    const blogs = await this.blogModel
+      .find(filterQuery)
+
+      .skip(skip)
+      .limit(limit);
+
+    const totalBlogCount = await this.blogModel.countDocuments({
+      title: { $regex: searchTerm, $options: 'i' },
+    });
+
+    if (blogs.length === 0) {
+      return {
+        message: 'No Blogs found with the given title',
+        blogs: [],
+        totalBlogs: totalBlogCount,
+      };
+    }
+    const totalPages = Math.ceil(totalBlogCount / limit);
+    if (page > totalPages) {
+      return {
+        message: `Page ${page} does not exist. Only ${totalPages} available.`,
+      };
+    }
+
+    return {
+      blogs: blogs,
+      totalBlogs: totalBlogCount,
+      currentPage: page,
+      totalPages,
+    };
   }
 }
