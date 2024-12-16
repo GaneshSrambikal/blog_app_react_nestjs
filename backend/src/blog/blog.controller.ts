@@ -53,12 +53,14 @@ export class BlogController {
   @UseGuards(JwtAuthGuard)
   @Get()
   async findAllBlogs() {
-    return this.blogService.findAll();
+    const blogs = await this.blogService.findAll();
+    return { blogs };
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('/blog/:id')
   async findBlogById(@Param('id') id: string) {
-    return this.blogService.findBlogById(id);
+    const blog = await this.blogService.findBlogById(id);
+    return { blog };
   }
 }

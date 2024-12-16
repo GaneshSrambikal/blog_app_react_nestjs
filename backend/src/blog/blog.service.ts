@@ -51,8 +51,9 @@ export class BlogService {
       deletedBlog,
     };
   }
+  // get all blogs
   async findAll(): Promise<Blog[]> {
-    return await this.blogModel.find().exec();
+    return await this.blogModel.find({}).sort({ createdAt: -1 }).exec();
   }
 
   async findBlogById(id: string): Promise<Blog> {

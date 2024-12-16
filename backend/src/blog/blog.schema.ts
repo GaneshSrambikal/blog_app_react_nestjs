@@ -38,12 +38,13 @@ export class Blog extends Document {
       name: { type: String, required: true },
       avatar_url: { type: String },
     },
+    _id: false,
   })
   author: { id: Types.ObjectId; name: string; avatar_url: string };
 
   @Prop({ type: String, required: true })
   heroImage: string;
-  
+
   @Prop({ required: true, type: Date, default: Date.now })
   createdAt: Date;
 
