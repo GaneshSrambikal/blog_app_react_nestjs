@@ -71,6 +71,9 @@ export class BlogService {
   // Update blog by Id
   async updateBlogById(body, blogId, userId): Promise<Blog> {
     const blog = await this.blogModel.findById(blogId);
+    if (!blog) {
+      throw new NotFoundException(`Blog with ID:${blogId} not found.`);
+    }
     if (blog?.author?.id.toString() !== userId) {
       throw new UnauthorizedException('Unauthorized request.');
     }
@@ -80,5 +83,35 @@ export class BlogService {
     });
 
     return updatedBlog;
+  }
+
+  // like a blog
+  async likeBlogById(blogId, userId) {
+    let message: Object = {};
+    const user = await this.userModel.findById(userId);
+
+    const blog = await this.blogModel.findById(blogId);
+    if (!blog) {
+      throw new NotFoundException(`Blog with ID: ${blogId} not found.`);
+    }
+
+    if (!blog.likes.includes(userId)) {
+      blog.likes.push(user.id);
+      await this.blogModel.findByIdAndUpdate(blogId, blog, { new: true });
+
+      message = {
+        message: `Liked the blog post: ${blogId}`,
+        userId: userId,
+      };
+    } else {
+      blog.likes = blog.likes.filter((like) => like.toString() !== userId);
+      await this.blogModel.findByIdAndUpdate(blogId, blog, { new: true });
+
+      message = {
+        message: `Un Liked the blog post: ${blogId}`,
+        userId: userId,
+      };
+    }
+    return message;
   }
 }

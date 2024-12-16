@@ -88,5 +88,11 @@ export class BlogController {
     };
   }
 
-  
+  // LIKES AND COMMENTS
+  @Post('/:id/like')
+  @UseGuards(JwtAuthGuard)
+  async likeBlogById(@Param() param: ValidateBlogIdDto, @GetUser() user: User) {
+    console.log(user);
+    return await this.blogService.likeBlogById(param.id, user.id);
+  }
 }
