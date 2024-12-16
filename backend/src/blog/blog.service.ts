@@ -2,17 +2,11 @@ import {
   BadRequestException,
   Injectable,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Blog } from './blog.schema';
 import { isValidObjectId, Model } from 'mongoose';
-import { CreateBlogDto } from './dto/create-blog.dto';
-import { ConfigService } from '@nestjs/config';
-import {
-  v2 as cloudinary,
-  UploadApiErrorResponse,
-  UploadApiResponse,
-} from 'cloudinary';
 import { User } from 'src/user/user.schema';
 
 @Injectable()
@@ -43,7 +37,20 @@ export class BlogService {
     const newBlog = new this.blogModel(blog);
     return newBlog.save();
   }
-
+  // delete blog by id
+  async deleteBlogById(user, blogId) {
+    const blog = await this.blogModel.findById(blogId);
+    if (!blog) {
+      throw new NotFoundException('Blog not found.');
+    }
+    if (blog?.author?.id !== user._id) {
+      throw new UnauthorizedException('Not authorized.');
+    }
+    const deletedBlog = await this.blogModel.findByIdAndDelete(blogId);
+    return {
+      deletedBlog,
+    };
+  }
   async findAll(): Promise<Blog[]> {
     return await this.blogModel.find().exec();
   }
