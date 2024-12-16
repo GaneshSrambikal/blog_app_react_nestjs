@@ -67,4 +67,18 @@ export class BlogService {
     }
     return blog;
   }
+
+  // Update blog by Id
+  async updateBlogById(body, blogId, userId): Promise<Blog> {
+    const blog = await this.blogModel.findById(blogId);
+    if (blog?.author?.id.toString() !== userId) {
+      throw new UnauthorizedException('Unauthorized request.');
+    }
+
+    const updatedBlog = await this.blogModel.findByIdAndUpdate(blogId, body, {
+      new: true,
+    });
+
+    return updatedBlog;
+  }
 }

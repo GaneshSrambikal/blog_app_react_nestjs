@@ -6,6 +6,7 @@ import {
   Get,
   Param,
   Post,
+  Put,
   UploadedFile,
   UseGuards,
   UseInterceptors,
@@ -21,6 +22,8 @@ import * as fs from 'fs';
 import { GetUser } from 'src/shared/decorators/get-user.decorator';
 import { User } from 'src/user/user.schema';
 import { DeleteBlogDto } from './dto/delete-blog.dto';
+import { UpdateBlogDto } from './dto/update-blog.dto';
+import { ValidateBlogIdDto } from './dto/validate-blog-id.dto';
 @Controller('blogs')
 export class BlogController {
   constructor(private readonly blogService: BlogService) {}
@@ -37,8 +40,8 @@ export class BlogController {
   }
 
   // Delete a blog
-  @UseGuards(JwtAuthGuard)
   @Delete('/blog/:id')
+  @UseGuards(JwtAuthGuard)
   async deleteBlogById(@Param() param: DeleteBlogDto, @GetUser() user: User) {
     const { deletedBlog } = await this.blogService.deleteBlogById(
       user,
@@ -50,17 +53,40 @@ export class BlogController {
     };
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get()
+  @UseGuards(JwtAuthGuard)
   async findAllBlogs() {
     const blogs = await this.blogService.findAll();
     return { blogs };
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get('/blog/:id')
+  @UseGuards(JwtAuthGuard)
   async findBlogById(@Param('id') id: string) {
     const blog = await this.blogService.findBlogById(id);
     return { blog };
   }
+
+  // Update the blog
+  @Put('/blog/:id')
+  @UseGuards(JwtAuthGuard)
+  async updateBlogById(
+    @Body() body: UpdateBlogDto,
+    @Param() params: ValidateBlogIdDto,
+    @GetUser() user: User,
+  ) {
+    const updatedBlog = await this.blogService.updateBlogById(
+      body,
+      params.id,
+      user.id,
+    );
+
+    return {
+      message: 'Updated Blog successfully',
+      blog_id: params.id,
+      blog: updatedBlog,
+    };
+  }
+
+  
 }
