@@ -114,4 +114,70 @@ export class BlogService {
     }
     return message;
   }
+
+  // comment on blog
+  async commentOnBlog(comment, blogId, userId) {
+    const user = await this.userModel.findById(userId);
+
+    const blog = await this.blogModel.findById(blogId);
+
+    if (!blog) {
+      throw new NotFoundException('Blog not found.');
+    }
+
+    const newComment = {
+      text: comment,
+      author: {
+        id: user.id,
+        name: user.name,
+        avatar_url: user.avatar_url,
+      },
+    };
+    blog.comments.push(newComment);
+    await this.blogModel.findByIdAndUpdate(blogId, blog, { new: true });
+    return {
+      message: 'Comment added successfully.',
+    };
+  }
+
+  // Get all comment on blog
+  async getAllCommentOnBlog(blogId) {
+    const blog = await this.blogModel.findById(blogId);
+
+    if (!blog) {
+      throw new NotFoundException('Blog not found');
+    }
+
+    return blog.comments.reverse();
+  }
+
+  // delete comment
+  async deleteComment(blogId, commentId) {
+    const blog = await this.blogModel.findById(blogId);
+
+    if (!blog) {
+      throw new NotFoundException('Blog not found');
+    }
+
+    let comments = [];
+    let flag = false;
+    blog.comments.forEach((cmt) => {
+      if (cmt['_id'].toString() == commentId) {
+        flag = true;
+      } else {
+        comments.push(cmt);
+      }
+    });
+
+    if (!flag) {
+      throw new NotFoundException('Comment not found');
+    }
+
+    blog.comments = comments;
+    await this.blogModel.findByIdAndUpdate(blogId, blog, { new: true });
+    return {
+      message: 'Comment deleted successfully.',
+    };
+  
+  }
 }

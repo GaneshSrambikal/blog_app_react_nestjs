@@ -24,6 +24,8 @@ import { User } from 'src/user/user.schema';
 import { DeleteBlogDto } from './dto/delete-blog.dto';
 import { UpdateBlogDto } from './dto/update-blog.dto';
 import { ValidateBlogIdDto } from './dto/validate-blog-id.dto';
+import { CommentBodyDto } from './dto/comment-body-dto';
+import { DeleteCommentDto } from './dto/delete-comment.dto';
 @Controller('blogs')
 export class BlogController {
   constructor(private readonly blogService: BlogService) {}
@@ -94,5 +96,34 @@ export class BlogController {
   async likeBlogById(@Param() param: ValidateBlogIdDto, @GetUser() user: User) {
     console.log(user);
     return await this.blogService.likeBlogById(param.id, user.id);
+  }
+
+  // comment on blog
+  @Post('/:id/comment')
+  @UseGuards(JwtAuthGuard)
+  async commentOnBlog(
+    @Body() body: CommentBodyDto,
+    @Param() param: ValidateBlogIdDto,
+    @GetUser() user: User,
+  ) {
+    return await this.blogService.commentOnBlog(
+      body.comment,
+      param.id,
+      user.id,
+    );
+  }
+
+  // get all comment of a blog
+  @Get('/:id/comment')
+  @UseGuards(JwtAuthGuard)
+  async getAllCommentOnBlog(@Param() param: ValidateBlogIdDto) {
+    return await this.blogService.getAllCommentOnBlog(param.id);
+  }
+
+  // Delete a comment
+  @Delete('/:blogId/comment/:commentId')
+  @UseGuards(JwtAuthGuard)
+  async deleteComment(@Param() param: DeleteCommentDto) {
+    return await this.blogService.deleteComment(param.blogId, param.commentId);
   }
 }
