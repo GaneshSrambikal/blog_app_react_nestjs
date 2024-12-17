@@ -43,7 +43,7 @@ export class BlogService {
     if (!blog) {
       throw new NotFoundException('Blog not found.');
     }
-    if (blog?.author?.id !== user._id) {
+    if (blog?.author?.id.toString() !== user.id) {
       throw new UnauthorizedException('Not authorized.');
     }
     const deletedBlog = await this.blogModel.findByIdAndDelete(blogId);
@@ -148,7 +148,7 @@ export class BlogService {
       throw new NotFoundException('Blog not found');
     }
 
-    return blog.comments.reverse();
+    return { comments: blog.comments.reverse() };
   }
 
   // delete comment

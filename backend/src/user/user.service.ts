@@ -348,7 +348,7 @@ export class UserService {
 
     const updatedUser = await this.userModel.findByIdAndUpdate(
       userId,
-      { totalAiCredit: user.totalAiCredits - 20 },
+      { totalAiCredits: user.totalAiCredits - 20 },
       { new: true },
     );
     return {

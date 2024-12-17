@@ -40,8 +40,8 @@ export class User extends Document {
   @Prop({ required: true, type: Date })
   dob: Date;
 
-  @Prop({ type: String, default: Date.now })
-  joined: string;
+  @Prop({ type: Date, default: Date.now })
+  joined: Date;
 
   @Prop({
     type: String,

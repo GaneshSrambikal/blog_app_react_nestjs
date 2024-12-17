@@ -27,12 +27,12 @@ import { UpdateBlogDto } from './dto/update-blog.dto';
 import { ValidateBlogIdDto } from './dto/validate-blog-id.dto';
 import { CommentBodyDto } from './dto/comment-body-dto';
 import { DeleteCommentDto } from './dto/delete-comment.dto';
-@Controller('blogs')
+@Controller('/api/blogs')
 export class BlogController {
   constructor(private readonly blogService: BlogService) {}
 
   // Create a blog
-  @Post('/blog/create-blog')
+  @Post('create-blog')
   @UseGuards(JwtAuthGuard)
   async createBlog(@GetUser() user: User, @Body() body: CreateBlogDto) {
     const newBlog = await this.blogService.createBlog(user.id, body);
@@ -57,14 +57,12 @@ export class BlogController {
   }
 
   @Get()
-  @UseGuards(JwtAuthGuard)
   async findAllBlogs() {
     const blogs = await this.blogService.findAll();
     return { blogs };
   }
 
   @Get('/blog/:id')
-  @UseGuards(JwtAuthGuard)
   async findBlogById(@Param('id') id: string) {
     const blog = await this.blogService.findBlogById(id);
     return { blog };
@@ -129,13 +127,13 @@ export class BlogController {
   }
 
   // Search blogs
-  @Get('/searchblog')
+  @Get('/search')
   async searchBlogs(@Query() query: any) {
     return await this.blogService.searchBlogs(query);
   }
 
   // search by category
-  @Post('search/category')
+  @Get('/search/category')
   async searchByCategory(@Query() query: any) {
     return await this.blogService.searchByCategory(query);
   }

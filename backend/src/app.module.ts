@@ -8,6 +8,7 @@ import { DatabaseModule } from './database/database.module';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { MulterModule } from '@nestjs/platform-express';
+import { PaymentModule } from './payment/payment.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -21,6 +22,7 @@ import { MulterModule } from '@nestjs/platform-express';
     MulterModule.register({
       dest: './uploads',
     }),
+    PaymentModule,
   ],
   controllers: [AppController],
   providers: [AppService],
