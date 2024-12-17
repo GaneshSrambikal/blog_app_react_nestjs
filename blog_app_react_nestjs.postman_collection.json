@@ -1,0 +1,680 @@
+{
+	"info": {
+		"_postman_id": "eeaded32-3b45-427b-965f-f5032931fd63",
+		"name": "blog_app_react_nestjs",
+		"description": "Blogosphere A blogging website made with MERN stack. includes a complete user management",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19069280"
+	},
+	"item": [
+		{
+			"name": "blogs",
+			"item": [
+				{
+					"name": "likes",
+					"item": [
+						{
+							"name": "likeBlogById",
+							"request": {
+								"method": "POST",
+								"header": []
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "comments",
+					"item": [
+						{
+							"name": "comment",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NWM4NTY3YmM0MDgyOTA0NTUwN2I2ZiIsImVtYWlsIjoiZXZhc21pdGhAZ21haWwuY29tIiwibmFtZSI6IkV2YSBTbWl0aCIsImlhdCI6MTczNDM2NjE2MSwiZXhwIjoxNzM0MzczMzYxfQ.72ronM_6BL7_FZxyvsEuYXTCQXbbD7h32HAfkc1hhSk",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"comment\": \"this is an comment\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/blogs/676012440fca095b4d79ff35/comment",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"blogs",
+										"676012440fca095b4d79ff35",
+										"comment"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getComments",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "deleteComment",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NWM4NTY3YmM0MDgyOTA0NTUwN2I2ZiIsImVtYWlsIjoiZXZhc21pdGhAZ21haWwuY29tIiwibmFtZSI6IkV2YSBTbWl0aCIsImlhdCI6MTczNDM2NjE2MSwiZXhwIjoxNzM0MzczMzYxfQ.72ronM_6BL7_FZxyvsEuYXTCQXbbD7h32HAfkc1hhSk",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/blogs/675f5ada813531bedf0afc1a/comment",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"blogs",
+										"675f5ada813531bedf0afc1a",
+										"comment"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "createBlog",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/blogs/blog/create-blog",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"blogs",
+								"blog",
+								"create-blog"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "findAllBlogs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/blogs",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"blogs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "findById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/blogs/blog/675369935ec2da9064e97499",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"blogs",
+								"blog",
+								"675369935ec2da9064e97499"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteById",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NWM4NTY3YmM0MDgyOTA0NTUwN2I2ZiIsImVtYWlsIjoiZXZhc21pdGhAZ21haWwuY29tIiwibmFtZSI6IkV2YSBTbWl0aCIsImlhdCI6MTczNDM0ODE5NywiZXhwIjoxNzM0MzU1Mzk3fQ.Q7VYVmiiibLmIiO3ZruSCrk_H_xLq4W9F5ijevaCjtg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/blogs/blog/675941ace5040231debc05b2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"blogs",
+								"blog",
+								"675941ace5040231debc05b2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateBlogById",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NWM4NTY3YmM0MDgyOTA0NTUwN2I2ZiIsImVtYWlsIjoiZXZhc21pdGhAZ21haWwuY29tIiwibmFtZSI6IkV2YSBTbWl0aCIsImlhdCI6MTczNDM1OTEwNCwiZXhwIjoxNzM0MzY2MzA0fQ.7u9PS3WJ--8yft1MxDTaWAU8HaRAXB5X1pwJenLO82s",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"This is an updated test content\",\r\n    \"content\": \"The HEART framework provides a robust approach, focusing on five key metrics: Happiness, Engagement, Adoption, Retention, and Task Success. Let's explore how we can apply HEART specifically within the technology category of DX.This focuses on the overall satisfaction of developers with their tools and processes. For technology, this could be measured through surveys asking about satisfaction with specific IDEs, deployment pipelines, debugging tools, or internal libraries.\",\r\n    \"category\": \"tech\",\r\n    \"excerpt\": \"THis is a short excerpt content\",\r\n    \"heroImage\": \"https://logos-world.net/wp-content/uploads/2023/09/Tech-logos-The-most-famous-technology-company-logos-and-names.png\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/blogs/blog/676012440fca095b4d79ff35",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"blogs",
+								"blog",
+								"676012440fca095b4d79ff35"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "profile",
+			"item": [
+				{
+					"name": "getProfile",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "getUsersProfile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NTk5YmVkNWUxYzg4YzQ1MDUzM2E4NiIsImVtYWlsIjoiam9obm1hdGhld0BnbWFpbC5jb20iLCJuYW1lIjoiSm9obiBNYXRoZXciLCJpYXQiOjE3MzM5OTQ1MjEsImV4cCI6MTczNDAwMTcyMX0.7TBQu6lxT4uNFuv9_kaJBoboYyq0NhQDMhRfI_9MlWA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/profile/67599bed5e1c88c",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"profile",
+								"67599bed5e1c88c"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateProfile",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/profile",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "uploadAvatar",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "generateAvatar",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "getCurrentAvatar",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "updateCredits",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NTk5YmVkNWUxYzg4YzQ1MDUzM2E4NiIsImVtYWlsIjoiam9obm1hdGhld0BnbWFpbC5jb20iLCJuYW1lIjoiSm9obiBNYXRoZXciLCJpYXQiOjE3MzQxMDk1MDksImV4cCI6MTczNDExNjcwOX0.b5SlGfGezv6sR0cd0MRfg0gIdWS46-4OU79ksnau_8M",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/update-credits",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"update-credits"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateRewards",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NTk5YmVkNWUxYzg4YzQ1MDUzM2E4NiIsImVtYWlsIjoiam9obm1hdGhld0BnbWFpbC5jb20iLCJuYW1lIjoiSm9obiBNYXRoZXciLCJpYXQiOjE3MzQxMDk1MDksImV4cCI6MTczNDExNjcwOX0.b5SlGfGezv6sR0cd0MRfg0gIdWS46-4OU79ksnau_8M",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"rewardType\":\"comment\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users/update-rewards",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"update-rewards"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "redeemCredits",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NWM4NTY3YmM0MDgyOTA0NTUwN2I2ZiIsImVtYWlsIjoiZXZhc21pdGhAZ21haWwuY29tIiwibmFtZSI6IkV2YSBTbWl0aCIsImlhdCI6MTczNDExNjczNCwiZXhwIjoxNzM0MTIzOTM0fQ.ZeVjCuNvN8ysT-oZqoRIxo-rMoVUd4L8oPPEhglrZq4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/redeem-credits",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"redeem-credits"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "password",
+			"item": [
+				{
+					"name": "forgotPassword",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "resetPassword",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "followers&following",
+			"item": [
+				{
+					"name": "followUser",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NTk5YmVkNWUxYzg4YzQ1MDUzM2E4NiIsImVtYWlsIjoiam9obm1hdGhld0BnbWFpbC5jb20iLCJuYW1lIjoiSm9obiBNYXRoZXciLCJpYXQiOjE3MzQxMDk1MDksImV4cCI6MTczNDExNjcwOX0.b5SlGfGezv6sR0cd0MRfg0gIdWS46-4OU79ksnau_8M",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/675c1f9928812e31b641e1ab/follow",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"675c1f9928812e31b641e1ab",
+								"follow"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "unFollowUser",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NTk5YmVkNWUxYzg4YzQ1MDUzM2E4NiIsImVtYWlsIjoiam9obm1hdGhld0BnbWFpbC5jb20iLCJuYW1lIjoiSm9obiBNYXRoZXciLCJpYXQiOjE3MzQxMDk1MDksImV4cCI6MTczNDExNjcwOX0.b5SlGfGezv6sR0cd0MRfg0gIdWS46-4OU79ksnau_8M",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/675c1f9928812e31b641e1ab/unfollow",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"675c1f9928812e31b641e1ab",
+								"unfollow"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listFollowers",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NTk5YmVkNWUxYzg4YzQ1MDUzM2E4NiIsImVtYWlsIjoiam9obm1hdGhld0BnbWFpbC5jb20iLCJuYW1lIjoiSm9obiBNYXRoZXciLCJpYXQiOjE3MzQxMDk1MDksImV4cCI6MTczNDExNjcwOX0.b5SlGfGezv6sR0cd0MRfg0gIdWS46-4OU79ksnau_8M",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/675c1f9928812e31b641e1ab/followers",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"675c1f9928812e31b641e1ab",
+								"followers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listFollowing",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "vercel",
+			"item": [
+				{
+					"name": "password",
+					"item": [
+						{
+							"name": "New Request",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "search",
+			"item": [
+				{
+					"name": "searchBlogs",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "searchByCategory",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "payment",
+			"item": [
+				{
+					"name": "initialOrder",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NWM4NTY3YmM0MDgyOTA0NTUwN2I2ZiIsImVtYWlsIjoiZXZhc21pdGhAZ21haWwuY29tIiwibmFtZSI6IkV2YSBTbWl0aCIsImlhdCI6MTczNDQ0MDg4NywiZXhwIjoxNzM0NDQ4MDg3fQ.Vk19N7H-4bw1oruuRl5fOdMOYBK4uNWmrjjCoT3Mzm0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"amount\": 100,\r\n    \"currency\": \"INR\",\r\n    \"receipt\": \"123456789\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/payment/razorpay/orders",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"payment",
+								"razorpay",
+								"orders"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:5000/api",
+			"type": "string"
+		}
+	]
+}
