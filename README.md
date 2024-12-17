@@ -30,7 +30,7 @@
 
 ## Postman Collection
 
-- [blog_app_react_node](https://github.com/GaneshSrambikal/blog_app_react_node/blob/15d8a641d763d36f17ac4d6f625ce97a513fbfbb/blog_app_react_node.postman_collection.json)
+- [blog_app_react_node](https://github.com/GaneshSrambikal/blog_app_react_nestjs/blob/adfbd3bade39dd0e68266bd96f5b2b29f0ac7870/blog_app_react_nestjs.postman_collection.json)
 
 ## About
 
