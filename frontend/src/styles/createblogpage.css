@@ -1,0 +1,109 @@
+.create-blog-container {
+  /* background-color: aqua; */
+  max-width: 768px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  padding-top: 8rem;
+}
+.create-blog-container .create-blog-form-c {
+  padding: 1rem;
+}
+.create-blog-excerpt-f {
+  resize: vertical;
+  max-height: 150px;
+  min-height: 100px;
+  color: #333;
+}
+.create-blog-select-category {
+  width: 250px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-weight: 300;
+  font-family: 'Poppins', sans-serif;
+  font-style: normal;
+}
+.create-blog-content-f {
+  resize: vertical;
+  max-height: 400px;
+  min-height: 200px;
+  color: #333;
+}
+.create-blog-preview-img {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 1px dashed #333;
+  border-radius: 5px;
+}
+.create-blog-preview-img button {
+  color: #fff;
+  background-color: rgb(253, 71, 71);
+  border: 0;
+  border-radius: 5px;
+  padding: 0.3rem 0.5rem;
+  margin-top: 1rem;
+  cursor: pointer;
+}
+.create-blog-form-sub-btn {
+  margin-top: 3rem;
+}
+.create-blog-file-container {
+  margin-top: 2rem;
+}
+.create-blog-file-container label {
+  display: inline-block;
+  margin-right: 1rem;
+}
+.create-blog-file-container span {
+  font-size: 14px;
+  color: gray;
+}
+.create-blog-form-container {
+  margin-bottom: 2rem;
+}
+#confetti-canvas {
+  width: 100%;
+  height: 100%;
+}
+.create-blog-ai-gen-btn {
+  width: 100%;
+  border: 1px solid #9c9c9c;
+  border-radius: 4px;
+  padding: 0.5rem 0.8rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(90deg, #f369f2 0%, #fc466b 0%, #3f5efb 100%);
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  cursor: pointer;
+}
+.create-blog-ai-gen-btn.cb-ai-disabled {
+  opacity: 0.6;
+  filter: blur(1px);
+  cursor: not-allowed;
+}
+.create-blog-ai-gen-btn svg {
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+  color: #3f5efb;
+}
+.create-blog-ai-credits-label {
+  text-transform: lowercase;
+  color: #3a50cc;
+  font-weight: 400;
+  margin-left: 1rem;
+}
+.create-blog-buy-credits-span {
+  margin-top: 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

@@ -30,7 +30,7 @@ import * as fs from 'fs';
 import cloudinary from 'src/cloudinary/cloudinary.config';
 import { ValidateUserIdDto } from 'src/shared/dto/validate-user-id.dto';
 import { PasswordResetDto } from './dto/password-reset.dto';
-@Controller('users')
+@Controller('/api/users')
 export class UserController {
   private readonly logger = new Logger(UserController.name);
   constructor(private readonly userService: UserService) {}
@@ -130,7 +130,7 @@ export class UserController {
   }
 
   // generate avatar
-  @Post('generate-avatar')
+  @Get('generate-avatar')
   @UseGuards(JwtAuthGuard)
   async generateAvatar(@Req() req: any) {
     const user = await this.userService.generateAvatar(req.user.id);

@@ -23,7 +23,8 @@ export class UpdateProfileDto {
   address?: string;
 
   @IsOptional()
-  @IsDate({ message: 'Date of birth must be a valid date' })
+  @IsDateString()
+  // @IsDate()
   dob?: Date;
 
   @IsOptional()
