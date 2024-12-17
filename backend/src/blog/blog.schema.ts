@@ -5,12 +5,14 @@ import { getReadingTime } from 'src/utils/commons';
 // comment subdocument schema
 @Schema({ timestamps: true })
 export class Comment {
+
   @Prop({
     type: {
       id: { type: Types.ObjectId, ref: 'User', required: true },
       name: { type: String, required: true },
       avatar_url: { type: String },
     },
+    _id: false,
   })
   author: { id: Types.ObjectId; name: string; avatar_url: string };
 
@@ -38,12 +40,13 @@ export class Blog extends Document {
       name: { type: String, required: true },
       avatar_url: { type: String },
     },
+    _id: false,
   })
   author: { id: Types.ObjectId; name: string; avatar_url: string };
 
   @Prop({ type: String, required: true })
   heroImage: string;
-  
+
   @Prop({ required: true, type: Date, default: Date.now })
   createdAt: Date;
 
