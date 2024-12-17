@@ -133,4 +133,10 @@ export class BlogController {
   async searchBlogs(@Query() query: any) {
     return await this.blogService.searchBlogs(query);
   }
+
+  // search by category
+  @Post('search/category')
+  async searchByCategory(@Query() query: any) {
+    return await this.blogService.searchByCategory(query);
+  }
 }

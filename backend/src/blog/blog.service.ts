@@ -248,4 +248,19 @@ export class BlogService {
       totalPages,
     };
   }
+
+  async searchByCategory(query) {
+    const category = query.category || '';
+    const page = parseInt(query.page) || 1;
+    const limit = parseInt(query.limit) || 10;
+    const skip = (page - 1) * limit;
+
+    const blogs = await this.blogModel.find({}).select('-_v');
+    const byCategory = blogs.filter((blog) => blog.category === category);
+
+    return {
+      blogs: byCategory,
+      totalBlogs: byCategory.length,
+    };
+  }
 }
