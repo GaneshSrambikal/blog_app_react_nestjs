@@ -91,7 +91,7 @@ _Buy AI Credits_
 #### Clone / fork the repo
 
 ```bash
-  git clone https://github.com/GaneshSrambikal/blog_app_react_nestjs
+  git clone https://github.com/GaneshSrambikal/blog_app_react_nestjs.git
 ```
 
 #### Frontend (cd frontend)
